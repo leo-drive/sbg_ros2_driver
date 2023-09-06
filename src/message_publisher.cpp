@@ -140,6 +140,7 @@ void MessagePublisher::initPublisher(rclcpp::Node& ref_ros_node_handle, SbgEComM
       case SBG_ECOM_LOG_GPS2_VEL:
 
         m_sbgGpsVel_pub_ = ref_ros_node_handle.create_publisher<sbg_driver::msg::SbgGpsVel>(ref_output_topic, m_max_messages_);
+        m_ecef_velocity_pub_ = ref_ros_node_handle.create_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(ref_output_topic, m_max_messages_);
         break;
 
       case SBG_ECOM_LOG_GPS1_POS:
@@ -606,6 +607,10 @@ void MessagePublisher::publish(SbgEComClass sbg_msg_class, SbgEComMsgId sbg_msg_
       if (m_sbgGpsVel_pub_)
       {
         m_sbgGpsVel_pub_->publish(m_message_wrapper_.createSbgGpsVelMessage(ref_sbg_log.gpsVelData));
+      }
+      if(m_ecef_velocity_pub_){
+
+          m_ecef_velocity_pub_->publish(m_message_wrapper_.createRosECEFTwistMessage(ref_sbg_log.gpsVelData));
       }
       break;
 

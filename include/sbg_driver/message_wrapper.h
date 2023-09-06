@@ -500,7 +500,15 @@ public:
    */
   const sbg_driver::msg::SbgImuData createSbgImuDataMessage(const SbgLogImuData& ref_log_imu_data) const;
 
-    /*!
+   /*!
+    * Create a Autoware Orientation data message.
+    *
+    * \param[in] ref_log_gps_vel      SBG GPS vel log.
+    * \return                         TwistWithCovarianceStamped msg.
+    */
+  const geometry_msgs::msg::TwistWithCovarianceStamped createRosECEFTwistMessage(const SbgLogGpsVel& ref_log_gps_vel) const;
+
+   /*!
    * Create a Autoware Orientation data message.
    *
    * \param[in] ref_ekf_euler_msg    SBG Ekf Quat log.

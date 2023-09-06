@@ -850,6 +850,37 @@ const sbg_driver::msg::SbgImuData MessageWrapper::createSbgImuDataMessage(const 
 
   return imu_data_message;
 }
+const geometry_msgs::msg::TwistWithCovarianceStamped  MessageWrapper::createRosECEFTwistMessage(const SbgLogGpsVel& ref_log_gps_vel) const{
+geometry_msgs::msg::TwistWithCovarianceStamped gps_ecef_twist_message;
+
+    gps_ecef_twist_message.header = createRosHeader(ref_log_gps_vel.timeStamp);
+    if (m_use_enu_)
+    {
+        gps_ecef_twist_message.twist.twist.linear.x = ref_log_gps_vel.velocity[1];
+        gps_ecef_twist_message.twist.twist.linear.y = ref_log_gps_vel.velocity[0];
+        gps_ecef_twist_message.twist.twist.linear.z = -ref_log_gps_vel.velocity[2];
+
+        gps_ecef_twist_message.twist.covariance[0] = ref_log_gps_vel.velocityAcc[1];
+        gps_ecef_twist_message.twist.covariance[7] = ref_log_gps_vel.velocityAcc[0];
+        gps_ecef_twist_message.twist.covariance[14] = ref_log_gps_vel.velocityAcc[2];
+
+        gps_ecef_twist_message.twist.twist.angular.z = wrapAngle360(90.0f - ref_log_gps_vel.course);
+    }
+    else
+    {
+        gps_ecef_twist_message.twist.twist.linear.x = ref_log_gps_vel.velocity[0];
+        gps_ecef_twist_message.twist.twist.linear.y = ref_log_gps_vel.velocity[1];
+        gps_ecef_twist_message.twist.twist.linear.z = ref_log_gps_vel.velocity[2];
+
+        gps_ecef_twist_message.twist.covariance[0]  = ref_log_gps_vel.velocityAcc[0];
+        gps_ecef_twist_message.twist.covariance[7]  = ref_log_gps_vel.velocityAcc[1];
+        gps_ecef_twist_message.twist.covariance[14] = ref_log_gps_vel.velocityAcc[2];
+
+        gps_ecef_twist_message.twist.twist.angular.z = ref_log_gps_vel.course;
+    }
+  return gps_ecef_twist_message;
+
+}
 
 const autoware_sensing_msgs::msg::GnssInsOrientationStamped MessageWrapper::createAutowareGnssInsOrientationMessage(const sbg_driver::msg::SbgEkfEuler& ref_ekf_euler_msg) const{
 

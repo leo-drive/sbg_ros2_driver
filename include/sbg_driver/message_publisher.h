@@ -84,6 +84,7 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::TimeReference, std::allocator<void>>::SharedPtr   m_utc_reference_pub_;
   rclcpp::Publisher<sensor_msgs::msg::NavSatFix, std::allocator<void>>::SharedPtr       m_nav_sat_fix_pub_;
   rclcpp::Publisher<nav_msgs::msg::Odometry, std::allocator<void>>::SharedPtr           m_odometry_pub_;
+  rclcpp::Publisher<geometry_msgs::msg::TwistWithCovarianceStamped, std::allocator<void>>::SharedPtr  m_ecef_velocity_pub_;
 
   rclcpp::Publisher<autoware_sensing_msgs::msg::GnssInsOrientationStamped , std::allocator<void>>::SharedPtr m_autoware_gnss_ins_orientation_pub_;
   rclcpp::Publisher<sensor_msgs::msg::NavSatFix , std::allocator<void>>::SharedPtr m_ekf_nav_sat_fix_pub_;
